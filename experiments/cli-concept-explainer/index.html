@@ -5,536 +5,731 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI × Web3 Concept Explainer</title>
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #f5f5f7;
+  --text: #1d1d1f;
+  --card-bg: #ffffff;
+  --card-border: #e5e5ea;
+  --nav-bg: #ffffff;
+  --nav-border: #e5e5ea;
+  --subtext: #86868b;
+  --header-start: #1a1a2e;
+  --header-end: #0f3460;
+  --accent: #0071e3;
+  --accent-hover: #0060c9;
+  --green: #34c759;
+  --orange: #ff9500;
+  --red: #ff3b30;
+  --quiz-bg: #f5f5f7;
+  --shadow: rgba(0,0,0,0.08);
+}
+[data-theme="dark"] {
+  --bg: #1c1c1e;
+  --text: #f5f5f7;
+  --card-bg: #2c2c2e;
+  --card-border: #3a3a3c;
+  --nav-bg: #2c2c2e;
+  --nav-border: #3a3a3c;
+  --subtext: #98989d;
+  --header-start: #0d0d1a;
+  --header-end: #0a1628;
+  --accent: #0a84ff;
+  --accent-hover: #409cff;
+  --quiz-bg: #2c2c2e;
+  --shadow: rgba(0,0,0,0.3);
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 body {
   font-family: -apple-system, "Segoe UI", "Noto Sans SC", sans-serif;
-  background: #f5f5f7;
-  color: #1d1d1f;
+  background: var(--bg);
+  color: var(--text);
   min-height: 100vh;
+  transition: background 0.3s, color 0.3s;
 }
 header {
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  background: linear-gradient(135deg, var(--header-start), var(--header-end));
   color: white;
-  padding: 32px 20px;
+  padding: 28px 20px;
   text-align: center;
+  position: relative;
 }
-header h1 { font-size: 24px; margin-bottom: 6px; }
-header p { font-size: 14px; opacity: 0.8; }
+header h1 {
+  font-size: 24px;
+  margin-bottom: 4px;
+}
+header p {
+  font-size: 14px;
+  opacity: 0.8;
+}
+header .stats {
+  font-size: 12px;
+  opacity: 0.6;
+  margin-top: 6px;
+}
+.theme-toggle {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: white;
+  padding: 6px 14px;
+  border-radius: 16px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.theme-toggle:hover {
+  background: rgba(255,255,255,0.25);
+}
 nav {
   display: flex;
   justify-content: center;
-  gap: 8px;
-  padding: 16px 20px;
-  background: white;
-  border-bottom: 1px solid #e5e5ea;
+  gap: 6px;
+  padding: 12px 16px;
+  background: var(--nav-bg);
+  border-bottom: 1px solid var(--nav-border);
   flex-wrap: wrap;
+  transition: background 0.3s, border-color 0.3s;
 }
 nav button {
-  padding: 8px 20px;
-  border: 1px solid #d2d2d7;
-  border-radius: 20px;
-  background: white;
-  color: #1d1d1f;
-  font-size: 14px;
+  padding: 7px 16px;
+  border: 1px solid var(--card-border);
+  border-radius: 18px;
+  background: transparent;
+  color: var(--text);
+  font-size: 13px;
   cursor: pointer;
   transition: all 0.2s;
 }
-nav button:hover { background: #f5f5f7; border-color: #0071e3; color: #0071e3; }
-nav button.active { background: #0071e3; border-color: #0071e3; color: white; }
-.container { max-width: 720px; margin: 0 auto; padding: 20px; }
-.section { display: none; }
-.section.active { display: block; }
-
-/* list */
+nav button:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+nav button.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+}
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 16px;
+}
+.section {
+  display: none;
+}
+.section.active {
+  display: block;
+}
+.section-title {
+  font-size: 13px;
+  color: var(--subtext);
+  text-align: center;
+  margin-bottom: 12px;
+}
 .concept-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 10px;
-  margin-top: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 8px;
 }
 .concept-card {
-  padding: 14px 16px;
-  background: white;
-  border-radius: 12px;
-  border: 1px solid #e5e5ea;
+  padding: 12px 14px;
+  background: var(--card-bg);
+  border-radius: 10px;
+  border: 1px solid var(--card-border);
   cursor: pointer;
   transition: all 0.2s;
 }
-.concept-card:hover { border-color: #0071e3; box-shadow: 0 2px 8px rgba(0,113,227,0.1); }
-.concept-card .cn { font-size: 15px; font-weight: 600; }
-.concept-card .en { font-size: 12px; color: #86868b; margin-top: 2px; }
-.concept-card .key { font-size: 11px; color: #0071e3; margin-top: 4px; font-family: monospace; }
-
-/* search */
+.concept-card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 2px 8px var(--shadow);
+}
+.concept-card .cn {
+  font-size: 14px;
+  font-weight: 600;
+}
+.concept-card .en {
+  font-size: 11px;
+  color: var(--subtext);
+  margin-top: 2px;
+}
+.concept-card .key {
+  font-size: 10px;
+  color: var(--accent);
+  margin-top: 3px;
+  font-family: monospace;
+  opacity: 0.8;
+}
 .search-box {
   display: flex;
   gap: 8px;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 .search-box input {
   flex: 1;
-  padding: 10px 16px;
-  border: 1px solid #d2d2d7;
+  padding: 10px 14px;
+  border: 1px solid var(--card-border);
   border-radius: 10px;
-  font-size: 15px;
+  font-size: 14px;
+  background: var(--card-bg);
+  color: var(--text);
   outline: none;
+  transition: border-color 0.2s;
 }
-.search-box input:focus { border-color: #0071e3; }
+.search-box input:focus {
+  border-color: var(--accent);
+}
+.search-box input::placeholder {
+  color: var(--subtext);
+}
 .search-box button {
-  padding: 10px 24px;
-  background: #0071e3;
+  padding: 10px 20px;
+  background: var(--accent);
   color: white;
   border: none;
   border-radius: 10px;
-  font-size: 14px;
+  font-size: 13px;
   cursor: pointer;
+  white-space: nowrap;
 }
-.search-box button:hover { background: #0060c9; }
-
-/* explain card */
+.search-box button:hover {
+  background: var(--accent-hover);
+}
 .explain-card {
-  background: white;
-  border-radius: 16px;
-  border: 1px solid #e5e5ea;
+  background: var(--card-bg);
+  border-radius: 14px;
+  border: 1px solid var(--card-border);
   overflow: hidden;
   animation: fadeIn 0.3s;
 }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-.explain-header {
-  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-  padding: 20px 24px;
-  border-bottom: 1px solid #e5e5ea;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
-.explain-header h2 { font-size: 20px; }
-.explain-header .en { font-size: 13px; color: #86868b; margin-top: 2px; }
-.explain-body { padding: 20px 24px; }
-.explain-section { margin-bottom: 20px; }
-.explain-section:last-child { margin-bottom: 0; }
-.explain-section .label {
+.explain-header {
+  background: color-mix(in srgb, var(--card-bg) 97%, var(--accent));
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--card-border);
+}
+.explain-header h2 {
+  font-size: 18px;
+}
+.explain-header .en {
   font-size: 12px;
+  color: var(--subtext);
+  margin-top: 2px;
+}
+.explain-body {
+  padding: 18px 20px;
+}
+.explain-section {
+  margin-bottom: 18px;
+}
+.explain-section:last-child {
+  margin-bottom: 0;
+}
+.explain-section .label {
+  font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  margin-bottom: 6px;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
 }
-.explain-section .label.one { color: #0071e3; }
-.explain-section .label.example { color: #34c759; }
-.explain-section .label.mis { color: #ff9500; }
-.explain-section .content { font-size: 15px; line-height: 1.7; color: #1d1d1f; }
-.not-found { text-align: center; padding: 40px; color: #86868b; }
-
-/* quiz */
-.quiz-progress { font-size: 13px; color: #86868b; margin-bottom: 12px; }
-.quiz-card {
-  background: white;
-  border-radius: 16px;
-  border: 1px solid #e5e5ea;
-  padding: 24px;
+.explain-section .label.one {
+  color: var(--accent);
 }
-.quiz-question .concept-name { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
-.quiz-question .q-type { font-size: 13px; color: #86868b; margin-bottom: 16px; }
-.quiz-question .q-text {
-  font-size: 15px;
+.explain-section .label.example {
+  color: var(--green);
+}
+.explain-section .label.mis {
+  color: var(--orange);
+}
+.explain-section .content {
+  font-size: 14px;
   line-height: 1.7;
-  padding: 16px;
-  background: #f5f5f7;
+}
+.not-found {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--subtext);
+}
+.badge {
+  display: inline-block;
+  padding: 1px 7px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+}
+.badge-ai {
+  background: color-mix(in srgb, var(--accent) 15%, transparent);
+  color: var(--accent);
+}
+.badge-human {
+  background: color-mix(in srgb, var(--green) 15%, transparent);
+  color: var(--green);
+}
+.quiz-progress {
+  font-size: 13px;
+  color: var(--subtext);
+  margin-bottom: 10px;
+}
+.quiz-card {
+  background: var(--card-bg);
+  border-radius: 14px;
+  border: 1px solid var(--card-border);
+  padding: 20px;
+}
+.quiz-question .concept-name {
+  font-size: 17px;
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+.quiz-question .q-type {
+  font-size: 12px;
+  color: var(--subtext);
+  margin-bottom: 14px;
+}
+.quiz-question .q-text {
+  font-size: 14px;
+  line-height: 1.7;
+  padding: 14px;
+  background: var(--quiz-bg);
   border-radius: 10px;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 .quiz-option {
   display: block;
   width: 100%;
-  padding: 14px 16px;
+  padding: 12px 14px;
   margin-bottom: 8px;
-  border: 1px solid #d2d2d7;
+  border: 1px solid var(--card-border);
   border-radius: 10px;
-  background: white;
-  font-size: 14px;
+  background: transparent;
+  color: var(--text);
+  font-size: 13px;
   text-align: left;
   cursor: pointer;
   transition: all 0.2s;
   line-height: 1.5;
 }
-.quiz-option:hover { border-color: #0071e3; background: #f0f7ff; }
-.quiz-option.selected { border-color: #0071e3; background: #e8f2fd; }
-.quiz-option.correct { border-color: #34c759; background: #e8f8ed; }
-.quiz-option.wrong { border-color: #ff3b30; background: #fff0ef; }
-.quiz-option:disabled { cursor: default; }
+.quiz-option:hover:not(:disabled) {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+}
+.quiz-option.correct {
+  border-color: var(--green);
+  background: color-mix(in srgb, var(--green) 15%, transparent);
+}
+.quiz-option.wrong {
+  border-color: var(--red);
+  background: color-mix(in srgb, var(--red) 15%, transparent);
+}
+.quiz-option:disabled {
+  cursor: default;
+  opacity: 0.7;
+}
 .quiz-result {
   text-align: center;
   padding: 40px 20px;
   animation: fadeIn 0.3s;
 }
 .quiz-result .score {
-  font-size: 48px;
+  font-size: 44px;
   font-weight: 700;
-  color: #0071e3;
+  color: var(--accent);
 }
-.quiz-result .score-label { font-size: 16px; color: #86868b; margin-top: 4px; }
+.quiz-result .score-label {
+  font-size: 15px;
+  color: var(--subtext);
+  margin-top: 4px;
+}
 .quiz-next-btn {
   display: inline-block;
-  margin-top: 16px;
-  padding: 10px 32px;
-  background: #0071e3;
+  margin-top: 14px;
+  padding: 9px 28px;
+  background: var(--accent);
   color: white;
   border: none;
   border-radius: 20px;
-  font-size: 14px;
+  font-size: 13px;
   cursor: pointer;
 }
-.quiz-next-btn:hover { background: #0060c9; }
-
-/* random */
-.random-btn-wrap { text-align: center; margin-bottom: 20px; }
+.quiz-next-btn:hover {
+  background: var(--accent-hover);
+}
+.random-btn-wrap {
+  text-align: center;
+  margin-bottom: 18px;
+}
 .random-btn {
-  padding: 12px 40px;
-  background: #0071e3;
+  padding: 10px 36px;
+  background: var(--accent);
   color: white;
   border: none;
-  border-radius: 24px;
-  font-size: 16px;
+  border-radius: 22px;
+  font-size: 15px;
   cursor: pointer;
 }
-.random-btn:hover { background: #0060c9; }
-
-/* badge */
-.badge-ai {
-  display: inline-block;
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-size: 11px;
-  font-weight: 600;
-  background: #e8f2fd;
-  color: #0071e3;
-}
-.badge-human {
-  display: inline-block;
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-size: 11px;
-  font-weight: 600;
-  background: #e8f8ed;
-  color: #34c759;
+.random-btn:hover {
+  background: var(--accent-hover);
 }
 .attribution {
   max-width: 720px;
-  margin: 0 auto;
-  padding: 20px;
+  margin: 6px auto;
+  padding: 16px;
   text-align: center;
-  font-size: 13px;
-  color: #86868b;
+  font-size: 12px;
+  color: var(--subtext);
   line-height: 1.8;
+}
+.progress-bar-wrap {
+  height: 4px;
+  background: var(--card-border);
+  border-radius: 2px;
+  margin: 8px 0 14px;
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width 0.4s;
+}
+.quiz-history {
+  font-size: 11px;
+  color: var(--subtext);
+  text-align: center;
+  margin-top: 10px;
+}
+.quiz-history span {
+  margin: 0 6px;
+}
+.cat-filter {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.cat-filter button {
+  padding: 4px 12px;
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  background: transparent;
+  color: var(--text);
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.cat-filter button.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+}
+.cat-filter button:hover:not(.active) {
+  border-color: var(--accent);
 }
 </style>
 </head>
 <body>
 
 <header>
-  <h1>AI × Web3 Concept Explainer</h1>
-  <p>Interactive learning tool — 11 core concepts</p>
+  <h1>AI x Web3 Concept Explainer</h1>
+  <p>Interactive learning tool</p>
+  <div class="stats" id="headerStats"></div>
+  <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">Dark</button>
 </header>
 
 <nav id="nav">
-  <button class="active" data-section="list">📋 概念列表</button>
-  <button data-section="explain">🔍 查询概念</button>
-  <button data-section="random">🎲 随机学习</button>
-  <button data-section="quiz">✏️ 小测验</button>
+  <button class="active" data-section="list">List</button>
+  <button data-section="explain">Search</button>
+  <button data-section="random">Random</button>
+  <button data-section="quiz">Quiz</button>
 </nav>
 
 <div class="container">
 
-  <!-- Section: List -->
   <div id="section-list" class="section active">
-    <p style="color:#86868b;font-size:14px;">点击任意概念查看详细解释</p>
+    <div class="section-title">Click a concept to learn</div>
+    <div class="cat-filter" id="catFilter"></div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" id="listProgress" style="width:0%"></div></div>
     <div class="concept-grid" id="conceptGrid"></div>
   </div>
 
-  <!-- Section: Explain -->
   <div id="section-explain" class="section">
     <div class="search-box">
-      <input type="text" id="searchInput" placeholder="输入概念关键词，如 agent、blockchain、llm..." onkeydown="if(event.key==='Enter')doSearch()">
-      <button onclick="doSearch()">搜索</button>
+      <input type="text" id="searchInput" placeholder="Search keyword, e.g. agent, llm, bridge, defi..." onkeydown="if(event.key==='Enter')doSearch()">
+      <button onclick="doSearch()">Search</button>
     </div>
     <div id="explainResult"></div>
   </div>
 
-  <!-- Section: Random -->
   <div id="section-random" class="section">
     <div class="random-btn-wrap">
-      <button class="random-btn" onclick="showRandom()">🎲 随机看一个概念</button>
+      <button class="random-btn" onclick="showRandom()">Random Concept</button>
     </div>
     <div id="randomResult"></div>
   </div>
 
-  <!-- Section: Quiz -->
   <div id="section-quiz" class="section">
+    <div class="section-title">5 questions per round</div>
     <div id="quizArea"></div>
+    <div class="quiz-history" id="quizHistory"></div>
   </div>
 
 </div>
 
 <div class="attribution">
-  <span class="badge-ai">AI-assisted</span> 概念内容由 AI 生成初稿，人工审校 ·
-  <span class="badge-human">Human-verified</span> 代码与交互经手动调试<br>
-  概念来源：<a href="https://aiweb3.school/zh/handbook/" target="_blank">AI × Web3 School Handbook</a>
+  <span class="badge badge-ai">AI-assisted</span> Content drafted by AI, human-reviewed
+  <span class="badge badge-human">Human-verified</span> Code & interaction manually tested<br>
+  Source: <a href="https://aiweb3.school/zh/handbook/" target="_blank" style="color:var(--accent)">AI x Web3 School Handbook</a>
+  | <span id="progressDisplay"></span>
 </div>
 
 <script>
 // ===== DATA =====
-const CONCEPTS = {
-  "llm": {
-    "name": "大型语言模型 (LLM)",
-    "name_en": "Large Language Model",
-    "one_line": "大型语言模型是一种基于海量文本数据训练而成的深度学习模型，能够根据输入的文本预测并生成连贯、上下文相关的自然语言输出。",
-    "example": "当你用 ChatGPT 写一封邮件，开头输入\"尊敬的张总，关于上周我们讨论的合作方案\"，模型会根据它从训练数据中学到的语言模式和知识，自动补写出得体、通顺的后续内容，而不需要你逐字逐句地写。",
-    "misconception": "很多人误以为 LLM 是一个\"知识库\"或\"搜索引擎\"，实际上它并不存储事实，而是根据统计规律生成最可能的下文——这意味着它可能自信地编造出不存在的信息（即\"幻觉\"）。在做事实核查或引用具体数据时，必须验证模型的输出，不能直接采信。"
-  },
-  "prompt": {
-    "name": "提示 (Prompt)",
-    "name_en": "Prompt",
-    "one_line": "提示是用户输入给 AI 模型的指令或问题，是人与模型进行交互和引导其输出的主要方式，决定了模型的行为方向和输出质量。",
-    "example": "在 Cursor 中写\"用 React 写一个带搜索功能的用户列表组件，数据从 useUsers hook 获取\"——这段自然语言描述就是一个 prompt，它告诉 AI 你想要什么功能、用什么技术栈、有什么约束条件。",
-    "misconception": "有人认为 prompt 是\"魔法咒语\"，需要特定的神秘措辞才能生效。实际上，prompt 的本质是用清晰、具体的语言表达需求。好的 prompt 靠的是明确的上下文、约束条件和输出格式，而不是花哨的模板或所谓的\"触发词\"。"
-  },
-  "context-window": {
-    "name": "上下文窗口 (Context Window)",
-    "name_en": "Context Window",
-    "one_line": "上下文窗口是模型在一次请求中能\"看到\"或\"参考\"的输入文本总量，决定了它在生成回复时可利用的信息上限。",
-    "example": "当你把整个项目的代码库粘贴到 Claude 的对话框中并询问\"这个 bug 在哪\"，如果粘贴的内容加上你的问题超过了上下文窗口限制，模型就会\"忘记\"最早输入的部分代码，导致回答遗漏关键信息。",
-    "misconception": "许多人把上下文窗口当作\"模型能记住的总信息量\"，但它更像一个工作台面——所有信息只在当前对话中使用，对话结束后模型不会保留任何\"记忆\"。此外，填满上下文窗口不一定更好：过多的无关信息会稀释模型对关键内容的注意力，降低输出质量。"
-  },
-  "agent": {
-    "name": "智能体 / Agent",
-    "name_en": "AI Agent",
-    "one_line": "智能体是一个能够自主感知环境、做出决策并采取行动来达成目标的 AI 系统，而不仅仅是被动地回答单个问题。",
-    "example": "一个代码审查 Agent 可以自动 checkout PR 分支、运行静态分析、调用 LLM 逐文件审查代码变更、在 PR 上留下逐条评论，并在发现严重问题时重新触发 CI——它全程自主决策，不需要人类逐一下达指令。",
-    "misconception": "初学者常把\"调 API 的脚本\"和 Agent 混为一谈。Agent 的核心是具备自主推理和规划能力：它能在未知情况下降级处理、根据中间结果灵活调整策略。单纯的条件分支编排不属于 Agent，只是自动化脚本。"
-  },
-  "tool-use": {
-    "name": "工具使用 (Tool Use)",
-    "name_en": "Tool Use",
-    "one_line": "工具使用是指 AI 模型能够调用外部函数或 API（如执行代码、查询数据库、搜索网页）来获取信息或执行操作，从而突破自身纯文本生成能力的限制。",
-    "example": "当 AI 编程助手需要读取你的项目文件时，它并不是\"凭空知道\"文件内容——它通过调用 read_file 工具来获取。这就是 tool use：模型负责决定何时调用哪个工具以及传什么参数，工具负责执行并返回结果给模型做下一步推理。",
-    "misconception": "有人误认为 tool use 是模型\"学会\"了操作数据库或发送网络请求。实际上，模型只是学会了决定\"应该调用哪个工具和传什么参数\"，工具的实际执行由外部运行时完成，模型自己并不具备这些能力。此外，模型不会持久化工具调用的结果，每次对话都需要重新获取。"
-  },
-  "blockchain": {
-    "name": "区块链网络",
-    "name_en": "Blockchain Network",
-    "one_line": "区块链网络的核心不是\"存数据\"，而是让互不信任的参与者对状态变化达成一致，通过共识机制维护一个公开、不可篡改的分布式账本。",
-    "example": "当你用 MetaMask 在 Ethereum 上发送 1 ETH 给朋友时，这笔交易不会立即完成——它先进入 Mempool（交易池）等待矿工/验证者打包，经过共识确认后记录在区块中，最终在区块浏览器上可见。整个过程不依赖任何中央机构。",
-    "misconception": "很多人以为区块链是\"存数据\"的数据库。实际上，区块链的核心是\"状态共识机\"——它的价值不在于存储效率（比数据库慢得多），而在于让互不信任的参与者对\"当前状态是什么\"达成一致。适合存需要多方信任的关键数据，不适合存大量原始数据。"
-  },
-  "pos": {
-    "name": "权益证明 (PoS)",
-    "name_en": "Proof of Stake",
-    "one_line": "权益证明是一种共识机制，验证者通过质押（stake）ETH 等代币来获得提议和证明新区块的资格，网络安全由经济质押和协议惩罚（Slashing）来保证。",
-    "example": "Ethereum 的验证者需要质押至少 32 ETH 才能参与出块。如果验证者诚实工作，获得区块奖励和手续费；如果作恶（如同时提议两个冲突区块），质押的 ETH 会被协议罚没（Slash）。这就像交一笔押金来获得工作资格，作弊就没收押金。",
-    "misconception": "有人误认为 PoS 是\"持有越多权力越大\"的垄断系统。实际上，Ethereum PoS 通过随机选取验证者、分布式客户端实现和协议内惩罚机制来防止中心化控制。拥有更多 ETH 确实能提高被选中的概率，但不能直接控制网络。"
-  },
-  "l2": {
-    "name": "二层网络 (L2)",
-    "name_en": "Layer 2",
-    "one_line": "二层网络是在主区块链（L1）之上构建的扩展方案，将大量交易在链下执行后把结果或证明提交回 L1，从而降低费用并提高交易吞吐量。",
-    "example": "在 Ethereum L1 上转账一次可能花费 $5-50 且需要等待区块确认，但通过 Arbitrum 或 Optimism 等 L2，同样的转账成本降至 $0.01-0.50，确认也更快。用户只需将资产通过跨链桥存入 L2 即可开始使用。",
-    "misconception": "很多人以为 L2 是独立的区块链。实际上，L2 的安全性最终依赖于 L1——它定期向 L1 提交数据或证明，L1 作为\"仲裁者\"保证 L2 上的交易可以被挑战和验证。但如果跨链桥本身被攻击，用户在 L2 上的资产仍然可能面临风险。"
-  },
-  "rollup": {
-    "name": "Rollup",
-    "name_en": "Rollup",
-    "one_line": "Rollup 是目前主流的 L2 扩展方案，将交易执行移到链下，然后将交易数据或有效性证明提交到 L1，在保持安全性的同时大大降低成本。",
-    "example": "Optimistic Rollup（如 Optimism）默认假设所有交易都是诚实的，但有 7 天的挑战期——如果有人发现欺诈可以提交证明。ZK Rollup（如 zkSync）则直接为每批交易生成零知识证明，L1 只需验证证明即可确认所有交易有效，无需挑战期。",
-    "misconception": "常有人把 Rollup 和侧链（Sidechain）混为一谈。关键区别：Rollup 的安全性继承自 L1（L1 可以强制 Rollup 上的操作），而侧链有自己的共识机制和安全模型。如果侧链被攻击，L1 无法恢复侧链上的资产。"
-  },
-  "hitl": {
-    "name": "人在环中 (Human-in-the-Loop)",
-    "name_en": "Human-in-the-Loop (HITL)",
-    "one_line": "人在环中是指在 AI 系统的决策流程中保留人类介入环节，让人类对关键操作进行确认、审核或修正，而不是让 AI 全自动运行。",
-    "example": "一个 AI 邮件起草工具生成了一封回复客户的邮件，但它不会直接发送——而是将草稿展示在界面上，等你点击\"确认发送\"后才真正发出。这就是 HITL：AI 负责效率（快速起草），人类把控最终决策权（确认内容合适）。",
-    "misconception": "HITL 不等于\"每个微不足道的操作都要人点头\"。如果 AI 每走一步都弹窗让人批准，那就失去了使用 AI 的意义。好的 HITL 设计需要识别哪些步骤风险高或需要人类判断力（如确认对外发送的内容、批准金融交易），哪些步骤可以全自动（如内部数据格式化）。"
-  },
-  "smart-contract": {
-    "name": "智能合约",
-    "name_en": "Smart Contract",
-    "one_line": "智能合约是部署在区块链上的可执行代码，在满足预设条件时自动执行，其结果公开透明且不可篡改。",
-    "example": "一个简单的众筹智能合约：设定目标金额和截止日期。如果到期前筹款达到目标，合约自动将资金转给项目方；如果未达标，合约自动将资金退回给每一位支持者。整个过程不需要人工干预或信任第三方。",
-    "misconception": "\"智能合约\"这个名称中的\"智能\"常被误解——它并不具备 AI 意义上的\"智能\"。智能合约只是\"if-this-then-that\"的确定性程序，所有逻辑在部署时已固定，不能像 AI 一样学习和适应。它的\"智能\"体现在自动执行和不可篡改，而非\"会思考\"。"
-  }
+var CONCEPTS = {"agent":{"name":"智能体 / Agent","name_en":"AI Agent","cat":"ai","one_line":"智能体是一个能够自主感知环境、做出决策并采取行动来达成目标的 AI 系统，而不仅仅是被动地回答单个问题。","example":"一个代码审查 Agent 可以自动 checkout PR 分支、运行静态分析、调用 LLM 逐文件审查代码变更、在 PR 上留下逐条评论，并在发现严重问题时重新触发 CI——它全程自主决策，不需要人类逐下达指令。","misconception":"初学者常把“调 API 的脚本”和 Agent 混为一谈。Agent 的核心是具备自主推理和规划能力：它能在未知情况下降级处理、根据中间结果灵活调整策略。单纯的条件分支编排不属于 Agent，只是自动化脚本。"},"agent-wallet":{"name":"Agent 钱包","name_en":"Agent Wallet","cat":"bridge","one_line":"Agent 钱包是供 AI Agent 程序化使用的区块链钱包，允许 Agent 自主签名交易、管理资产和调用合约，而不需要人类逐笔确认。","example":"一个自动化做市 Agent 在检测到套利机会时，使用自己的 Agent 钱包直接调用 DEX 合约进行交易——钱包的私钥存储在安全环境中，Agent 只通过 API 签名特定类型交易，受权限和额度限制。","misconception":"有人以为 Agent 钱包就是普通钱包交给 Agent 用。实际上，Agent 钱包的关键是“程序化访问控制”——需要设置交易额度上限、白名单合约地址、多签审批等安全机制，而不是简单地把私钥给 Agent。"},"ai-oracle":{"name":"AI 预言机","name_en":"AI Oracle","cat":"bridge","one_line":"AI 预言机是将 AI 模型的推理结果（如分类、评分、生成内容）上链的中间件，让智能合约能够使用 AI 能力。","example":"一个去中心化保险合约需要判断天气是否达到赔付条件——AI 预言机接收卫星图像，运行灾害识别模型，将结果和零知识证明一起提交到链上，触发自动赔付。","misconception":"AI 预言机不是直接在链上跑 AI 模型。它是在链下执行 AI 推理，然后将结果和可验证的证据提交到链上。"},"amm":{"name":"自动做市商 (AMM)","name_en":"Automated Market Maker","cat":"web3","one_line":"AMM 是一种去中心化交易机制，用数学公式代替传统的订单薄来决定资产价格，用户直接与流动性池交易而非与对手方匹配。","example":"在 Uniswap 上用 USDC 换 ETH 时，你不是在等一个愿意卖 ETH 的人，而是直接与 USDC/ETH 流动性池交易。价格由池中两种资产的数量比例根据 x*y=k 公式自动计算，交易量越大滑点越高。","misconception":"有人以为 AMM 的价格和外部市场是独立的。实际上，套利者会通过在一级市场和 AMM 之间来回交易，把 AMM 价格拉到和市场一致。"},"blockchain":{"name":"区块链网络","name_en":"Blockchain Network","cat":"web3","one_line":"区块链网络的核心不是“存数据”，而是让互不信任的参与者对状态变化达成一致，通过共识机制维护一个公开、不可竹改的分布式账本。","example":"当你用 MetaMask 在 Ethereum 上发送 1 ETH 给朋友时，这笔交易不会立即完成——它先进入 Mempool 等待验证者打包，经过共识确认后记录在区块中，最终在区块浏览器上可见。整个过程不依赖任何中央机构。","misconception":"很多人以为区块链是“存数据”的数据库。实际上，区块链的核心是“状态共识机”。"},"bridge":{"name":"跨链桥","name_en":"Cross-Chain Bridge","cat":"web3","one_line":"跨链桥是一种在两条不同区块链之间转移资产或数据的协议，通过在源链锁定资产并在目标链铸造等价代币来实现跨链操作。","example":"把 Ethereum 上的 USDC 转到 Arbitrum：你把 USDC 发送到 Ethereum 上的桥合约锁定，桥验证后在 Arbitrum 上铸造等量 USDC 到你的地址。","misconception":"跨链桥不是“传送”资产，资产从未离开源链——它只是在源链被锁定，然后在目标链上“重新铸造”。桥合约成为巨额资产托管方，历史上多次因桥合约漏洞导致数亿美元被盗。"},"consensus":{"name":"共识机制","name_en":"Consensus Mechanism","cat":"web3","one_line":"共识机制是区块链网络中所有参与者对“哪个区块是有效的”以及“状态如何变更”达成一致的规则和协议。","example":"当你在 Ethereum 上发送一笔交易，不同节点可能在不同时间收到它。共识机制确保所有节点最终对“这笔交易在哪个区块、什么顺序被确认”达成一致。","misconception":"共识不等于“所有节点同时知道真相”——实际上节点永远处于不一致到一致的过程中。这就是为什么交易需要等待“确认数”。"},"context-window":{"name":"上下文窗口","name_en":"Context Window","cat":"ai","one_line":"上下文窗口是模型在一次请求中能“看到”或“参考”的输入文本总量，决定了它在生成回复时可利用的信息上限。","example":"当你把整个项目的代码库粘贴到 Claude 的对话框中并询问“这个 bug 在哪”，如果粘贴的内容加上你的问题超过了上下文窗口限制，模型就会“忘记”最早输入的部分代码。","misconception":"许多人把上下文窗口当作“模型能记住的总信息量”，但它更像一个工作台面。此外，填满上下文窗口不一定更好：过多的无关信息会稀释模型对关键内容的注意力。"},"cryptography":{"name":"密码学基础","name_en":"Cryptography","cat":"web3","one_line":"区块链密码学使用哈希函数和非对称加密来确保交易的真实性、完整性和不可否认性。","example":"当你生成一个 Ethereum 钱包时，实际上是创建了一对公私钥。公钥作为你的地址，私钥是控制资产的唯一凭证。交易时你用私钥签名，网络用公钥验证签名是否由你发出。","misconception":"很多人以为钱包“存”着代币。实际上代币永远在链上，钱包只是私钥管理工具。谁持有私钥，谁就控制了对应地址的所有资产。"},"dao":{"name":"去中心化自治组织 (DAO)","name_en":"Decentralized Autonomous Organization","cat":"web3","one_line":"DAO 是通过智能合约运行的组织，决策由代币持有者投票决定，规则公开在链上，没有传统的中心化管理层。","example":"一个社区管理的 DeFi 协议通过 DAO 运作：用户持有治理代币来提案和投票，投票通过后智能合约自动执行参数变更。所有投票记录和资金流动都在区块链上可查。","misconception":"DAO 不等于“绝对民主”。实际上大部分代币持有者不投票，决策权集中在少数大持有者手中。同时 DAO 的法律地位模糊，在大多数司法管辖区不被视为法律实体。"},"decentralized-ai":{"name":"去中心化 AI","name_en":"Decentralized AI","cat":"bridge","one_line":"去中心化 AI 是让 AI 模型的训练和推理不依赖单一中心化机构，通过区块链和加密经济激励分布式参与者贡献算力、数据和算法。","example":"一个去中心化 AI 平台中，全球各地的 GPU 所有者可以出租算力来训练开源模型，数据贡献者获得 Token 报酬，模型权重通过链上共识或 ZK 证明验证正确性。","misconception":"去中心化 AI 不等于“在链上跑 AI 模型”。链上无法跑大模型。真正去中心化的是“协调层”——用区块链来协调谁贡献了算力、数据、报酬如何分配。"},"defi":{"name":"去中心化金融 (DeFi)","name_en":"Decentralized Finance","cat":"web3","one_line":"DeFi 是基于智能合约构建的开放式金融协议，允许任何人无需许可地进行借贷、交易、理财等金融活动，不需要银行或券商等中介。","example":"你可以在 Aave 上存入 ETH 作为抵押品，借出 USDC 用于交易，同时存入的 ETH 还在生息——所有操作都在浏览器中完成，不需要提交身份证明、等待审核或信任任何中介。","misconception":"很多人以为 DeFi 没有风险。实际上 DeFi 面临智能合约漏洞、闪电贷攻击、预言机操纵、清算风险等多重威胁。“无许可”也意味着没有人可以帮你。"},"embedding":{"name":"嵌入 / Embedding","name_en":"Embedding","cat":"ai","one_line":"Embedding 是将文本、图像等非结构化数据转换为向量的技术，使得语义相似的内容在向量空间中彼此靠近，是 RAG 和语义搜索的基础。","example":"当你在 Notion AI 中搜索“去年的 Q3 销售数据”时，系统把每个页面的内容转成向量，然后找到语义最接近的页面返回——即使页面中没有出现“Q3”这个词。","misconception":"有人以为 Embedding 是模型“理解”了文本的含义。实际上 Embedding 只是将文本映射到高维空间中的位置，“相似”是由向量距离定义的数学概念。"},"eval":{"name":"评估 / Eval","name_en":"Evaluation","cat":"ai","one_line":"评估是系统性地测试 AI 模型或应用在特定任务上的性能、准确性和安全性，以量化方式衡量“这个 AI 表现如何”。","example":"开发一个客服 AI 时，你准备 500 条典型用户问题和对应的期望答案，每次更新 prompt 后批量运行这 500 条测试，比较输出与期望答案的一致率。","misconception":"很多人只靠“感觉”来评估 AI 输出，而不用结构化评估。更严重的误区是只测几个精心设计的例子，但没测试边缘情况。好的评估需要覆盖正常、边界和恶意输入三类场景。"},"finetuning":{"name":"微调 / Fine-tuning","name_en":"Fine-tuning","cat":"ai","one_line":"微调是在已经预训练好的大模型基础上，用特定领域的数据继续训练一小部分参数，让模型更好地完成特定任务。","example":"如果你想让模型生成更符合你公司风格的客服回复，可以在基座模型之上，用过去一年优秀的客服对话记录做微调。","misconception":"很多人以为微调可以让模型“学会”新知识。实际上微调主要是调整模型的“行为风格和输出格式”，不是注入新知识。注入事实性知识最好的方式是 RAG。"},"gas":{"name":"Gas / 燃料费","name_en":"Gas","cat":"web3","one_line":"Gas 是 Ethereum 上执行交易或合约操作所需支付的手续费，由 Gas Limit 和 Gas Price 共同决定。","example":"发送一笔普通 ETH 转账需要 21,000 Gas。如果当前网络拥堵，你可以设置 Gas Price 为 50 Gwei，则总费用 = 21,000 x 50 Gwei = 0.00105 ETH。","misconception":"很多人以为 Gas 是“给项目方的服务费”。实际上所有 Gas 都付给验证者，用于补偿他们执行交易和保障网络安全的计算成本。"},"hitl":{"name":"人在环中 (HITL)","name_en":"Human-in-the-Loop","cat":"ai","one_line":"人在环中是指在 AI 系统的决策流程中保留人类介入环节，让人类对关键操作进行确认、审核或修正，而不是让 AI 全自动运行。","example":"一个 AI 邮件起草工具生成了一封回复客户的邮件，但它不会直接发送——而是将草稿展示在界面上，等你点击“确认发送”后才真正发出。","misconception":"HITL 不等于“每个微不足道的操作都要人点头”。好的 HITL 设计需要识别哪些步骤风险高或需要人类判断力，哪些步骤可以全自动。"},"inference":{"name":"推理 / Inference","name_en":"Inference","cat":"ai","one_line":"推理是使用已训练好的 AI 模型对新输入数据进行预测或生成的过程，是模型“实际干活”的阶段。","example":"当你打开 ChatGPT 输入“用 Python 写一个冒泡排序”并收到代码输出时，模型正在执行推理。推理可能发生在云端或本地。","misconception":"很多人分不清训练和推理的成本差异。训练一次大模型可能需要数百万美元的电力和算力，但推理一次可能只需要几分钱。然而被大规模调用时，推理总成本可能远超训练成本。"},"l2":{"name":"二层网络 (L2)","name_en":"Layer 2","cat":"web3","one_line":"二层网络是在主区块链（L1）之上构建的扩展方案，将大量交易在链下执行后把结果或证明提交回 L1，从而降低费用并提高交易吞吐量。","example":"在 Ethereum L1 上转账一次可能花费 $5-50 且需要等待区块确认，但通过 Arbitrum 或 Optimism 等 L2，同样的转账成本降至 $0.01-0.50，确认也更快。","misconception":"很多人以为 L2 是独立的区块链。实际上 L2 的安全性最终依赖于 L1。但如果跨链桥本身被攻击，用户在 L2 上的资产仍然可能面临风险。"},"llm":{"name":"大型语言模型 (LLM)","name_en":"Large Language Model","cat":"ai","one_line":"大型语言模型是一种基于海量文本数据训练而成的深度学习模型，能够根据输入的文本预测并生成连贯、上下文相关的自然语言输出。","example":"当你用 ChatGPT 写一封邮件，开头输入“尊敬的张总，关于上周我们讨论的合作方案”，模型会根据它从训练数据中学到的语言模式和知识，自动补写出得体、通顺的后续内容。","misconception":"很多人误以为 LLM 是一个“知识库”或“搜索引擎”，实际上它并不存储事实，而是根据统计规律生成最可能的下文。在做事实核查或引用具体数据时，必须验证模型的输出。"},"machine-payment":{"name":"机器支付","name_en":"Machine Payment","cat":"bridge","one_line":"机器支付是指 AI Agent 或物联网设备自主使用数字货币支付服务费用，无需人类手动操作支付流程。","example":"一个 AI 研究 Agent 需要调用一个付费论文 API 来获取最新文献——Agent 从自己的加密钱包中按调用次数自动支付微额费用，每篇论文 0.01 USDC。","misconception":"机器支付不是简单的“自动扣款”。它要求 Agent 能自主决策“是否值得支付这个费用”、比较不同服务商的价格、处理支付失败的回退方案。"},"mcp":{"name":"MCP 协议","name_en":"Model Context Protocol","cat":"ai","one_line":"MCP 是 Anthropic 提出的开放协议，定义了 AI 模型与外部工具和数据源之间的标准接口，让模型可以像 USB 设备“即插即用”一样接入各种服务。","example":"配置了一个 GitHub MCP 服务器后，Claude 可以直接执行 git 操作（查看 PR、列出 issue、创建分支）而无需手工写 GitHub API 调用。","misconception":"有人以为 MCP 是一个工具或产品。实际上 MCP 是一个协议标准，类比 USB 标准。工具开发者实现 MCP 服务端，AI 客户端通过 MCP 协议发现和调用这些工具。"},"nft":{"name":"非同质化代币 (NFT)","name_en":"Non-Fungible Token","cat":"web3","one_line":"NFT 是在区块链上代表独特数字资产所有权的代币，每个 NFT 都是唯一的、不可互换的。","example":"一个数字艺术家创作了一幅作品并将其 铸造为 NFT 发行。买家购买后，链上记录显示该地址拥有此 NFT。即使任何人都可以右键保存图片，链上所有权记录决定了谁真正拥有原始版本。","misconception":"很多人认为“买 NFT 就等于拥有了图片的版权”。实际上，除非智能合约明确转让，买 NFT 通常只获得链上所有权记录，不包含商业使用权。"},"oracle":{"name":"预言机","name_en":"Oracle","cat":"web3","one_line":"预言机是将链下数据安全地传递到区块链上的中间件，解决区块链无法直接访问外部数据的问题。","example":"一个 DeFi 借贷协议需要实时 ETH/USD 价格来计算用户的抵押率。协议通过 Chainlink 预言机网络获取价格——多个独立节点从不同交易所提交价格并聚合，防止单点故障或数据操纵。","misconception":"预言机的核心挑战是“信任”。解决方案包括：多个数据源聚合、节点独立验证、加密经济激励（诚实有奖、撒谎受罚）。"},"pos":{"name":"权益证明 (PoS)","name_en":"Proof of Stake","cat":"web3","one_line":"权益证明是一种共识机制，验证者通过质押 ETH 等代币来获得提议和证明新区块的资格，网络安全由经济质押和协议惩罚来保证。","example":"Ethereum 的验证者需要质押至少 32 ETH 才能参与出块。如果验证者诚实工作，获得区块奖励和手续费；如果作恶，质押的 ETH 会被协议罚没。","misconception":"有人误认为 PoS 是“持有越多权力越大”的垂断系统。实际上 Ethereum PoS 通过随机选取验证者、分布式客户端实现和协议内惩罚机制来防止中心化控制。"},"prompt":{"name":"提示 (Prompt)","name_en":"Prompt","cat":"ai","one_line":"提示是用户输入给 AI 模型的指令或问题，是人与模型进行交互和引导其输出的主要方式，决定了模型的行为方向和输出质量。","example":"在 Cursor 中写“用 React 写一个带搜索功能的用户列表组件，数据从 useUsers hook 获取”——这段自然语言描述就是一个 prompt。","misconception":"有人认为 prompt 是“魔法咒语”，需要特定的神秘措辞才能生效。实际上 prompt 的本质是用清晰、具体的语言表达需求，而不是花哨的模板或触发词。"},"rag":{"name":"检索增强生成 (RAG)","name_en":"Retrieval-Augmented Generation","cat":"ai","one_line":"RAG 是一种在 AI 生成回答前先从外部知识库检索相关文档作为参考信息的技术，让模型基于真实资料而非仅靠自身记忆来回答。","example":"当你在客服聊天框中询问“我的订单 #12345 到哪里了”，RAG 系统首先从订单数据库中检索该订单的最新状态，然后将检索结果连同你的问题一起发给 LLM。","misconception":"很多人以为 RAG = “把 PDF 扔进去让 AI 读”。实际上 RAG 的核心瓶颈往往在检索阶段：文档切片质量、向量索引质量、检索到的信息是否相关。如果检索不到相关文档，LLM 再强也生成不出正确答案。"},"rollup":{"name":"Rollup","name_en":"Rollup","cat":"web3","one_line":"Rollup 是目前主流的 L2 扩展方案，将交易执行移到链下，然后将交易数据或有效性证明提交到 L1，在保持安全性的同时大大降低成本。","example":"Optimistic Rollup 默认假设所有交易都是诚实的，但有 7 天的挑战期。ZK Rollup 则直接为每批交易生成零知识证明，L1 只需验证证明即可确认所有交易有效。","misconception":"常有人把 Rollup 和侧链混为一谈。关键区别：Rollup 的安全性继承自 L1，而侧链有自己的共识机制。如果侧链被攻击，L1 无法恢复侧链上的资产。"},"smart-contract":{"name":"智能合约","name_en":"Smart Contract","cat":"web3","one_line":"智能合约是部署在区块链上的可执行代码，在满足预设条件时自动执行，其结果公开透明且不可竹改。","example":"一个简单的众筹智能合约：设定目标金额和截止日期。如果到期前筹款达到目标，合约自动将资金转给项目方；如果未达标，自动退回给每一位支持者。","misconception":"“智能合约”中的“智能”常被误解——它并不具备 AI 意义上的“智能”。智能合约只是确定性程序，所有逻辑在部署时已固定。它的“智能”体现在自动执行和不可竹改，而非“会思考”。"},"temperature":{"name":"温度 / Temperature","name_en":"Temperature","cat":"ai","one_line":"Temperature 是控制 AI 模型输出随机性的参数，值越低输出越确定和保守，值越高输出越多样和有创意。","example":"当你在写代码时使用 temperature=0.1，模型每次对同一个 bug 给出的修复代码几乎是相同的。当你在写故事时使用 temperature=0.8，模型每次写的故事情节都有所不同。","misconception":"有人以为 temperature 是“智能程度”或“准确性”的调节旋钮。实际上 temperature 只控制“随机性”。高 temperature 可以产生更有创意的输出，但也更容易偏离事实。"},"tokenization":{"name":"分词 / Tokenization","name_en":"Tokenization","cat":"ai","one_line":"分词是将文本分割成模型能处理的最小单位（Token）的过程，是模型理解和生成文本的基本计数单元。","example":"句子“I love AI”可能会被分成 [“I”, “ love”, “ AI”] 三个 Token。中文“我爱人工智能”可能被分成 [“我爱”, “人工”, “智能”]。","misconception":"很多人认为“一个字 = 一个 Token”。实际上常见词可能各占一个 Token，而罕见词或专业术语可能被拆成多个 Token。这直接影响模型处理和计费。"},"tool-use":{"name":"工具使用 (Tool Use)","name_en":"Tool Use","cat":"ai","one_line":"工具使用是指 AI 模型能够调用外部函数或 API 来获取信息或执行操作，从而突破自身纯文本生成能力的限制。","example":"当 AI 编程助手需要读取你的项目文件时，它并不是“凭空知道”文件内容——它通过调用 read_file 工具来获取。","misconception":"有人误认为 tool use 是模型“学会”了操作数据库或发送网络请求。实际上模型只是学会了决定“应该调用哪个工具和传什么参数”，工具的实际执行由外部运行时完成。"},"verifiable-ai":{"name":"可验证 AI","name_en":"Verifiable AI","cat":"bridge","one_line":"可验证 AI 通过密码学技术让 AI 模型推理过程可被公开验证，确保输出确实来自声称的模型且未被竹改。","example":"一个链上借贷协议使用 AI 评估信用风险——AI 模型在 TEE 中运行，同时生成零知识证明，证明“该信用评分确实来自经审核的模型 v2.3”。","misconception":"可验证 AI 不是“让 AI 更准确”的技术。它解决的是信任问题而不是性能问题——即使验证证明模型正确地运行了推理过程，如果模型本身有偏见，输出仍然可能不准确。"},"vibecoding":{"name":"氛围编码 / Vibe Coding","name_en":"Vibe Coding","cat":"ai","one_line":"Vibe Coding 是一种完全依赖 AI 编程助手的开发方式，开发者用自然语言描述想要的功能，让 AI 生成全部代码，人只负责审查和迭代需求描述。","example":"你在 Cursor 中不写一行代码，全程用自然语言描述：“做一个番茄钟网页应用，有开始/暂停/重置按钮，每次 25 分钟，结束后弹出通知”。AI 生成全部代码。","misconception":"有人以为 Vibe Coding 就是“不用学编程了”。实际上 Vibe Coding 更适合已有编程经验的人——你需要知道什么是合理需求、能识别 AI 输出的问题、会在 AI 出错时调整方向。"},"wallet":{"name":"钱包","name_en":"Wallet","cat":"web3","one_line":"钱包是管理区块链账户公私钥对、与链上应用交互的工具，负责签名交易、管理地址和展示资产余额。","example":"安装 MetaMask 浏览器插件后，你创建一个钱包——生成一个地址和对应的私钥。之后访问 Uniswap 时，MetaMask 自动弹出连接请求，确认后你可以用这个钱包签名交易、支付 Gas、查看代币余额。","misconception":"很多人以为钱包里“存”着钱。实际上钱包不存任何资产，资产永远在链上。钱包只管理私钥。所以助记词/私钥泄露 = 所有资产可能被盗。"}};
+
+// ===== CATEGORIES =====
+var CATEGORIES = {
+  ai: { label: "AI", concepts: [] },
+  web3: { label: "Web3", concepts: [] },
+  bridge: { label: "AI x Web3", concepts: [] }
 };
+for (var k in CONCEPTS) {
+  var cat = CONCEPTS[k].cat || "ai";
+  CATEGORIES[cat].concepts.push(k);
+}
+
+// ===== THEME =====
+function toggleTheme() {
+  var html = document.documentElement;
+  var current = html.getAttribute("data-theme") || "light";
+  var next = current === "dark" ? "light" : "dark";
+  html.setAttribute("data-theme", next);
+  localStorage.setItem("theme", next);
+  document.getElementById("themeToggle").textContent = next === "dark" ? "Light" : "Dark";
+}
+(function initTheme() {
+  var saved = localStorage.getItem("theme");
+  if (!saved) saved = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  document.documentElement.setAttribute("data-theme", saved);
+  document.getElementById("themeToggle").textContent = saved === "dark" ? "Light" : "Dark";
+})();
+
+// ===== LOCALSTORAGE PROGRESS =====
+function getProgress() {
+  try { return JSON.parse(localStorage.getItem("explainProgress") || "{}"); } catch(e) { return {}; }
+}
+function markViewed(key) {
+  var p = getProgress();
+  p[key] = (p[key] || 0) + 1;
+  localStorage.setItem("explainProgress", JSON.stringify(p));
+  updateProgressBar();
+}
+function getQuizHistory() {
+  try { return JSON.parse(localStorage.getItem("quizHistory") || "[]"); } catch(e) { return []; }
+}
+function addQuizResult(score, total) {
+  var h = getQuizHistory();
+  h.push({ score: score, total: total, date: new Date().toISOString().slice(0,10) });
+  if (h.length > 20) h = h.slice(-20);
+  localStorage.setItem("quizHistory", JSON.stringify(h));
+}
+function updateProgressBar() {
+  var p = getProgress();
+  var total = Object.keys(CONCEPTS).length;
+  var viewed = Object.keys(p).length;
+  var pct = Math.round(viewed / total * 100);
+  var bar = document.getElementById("listProgress");
+  if (bar) bar.style.width = pct + "%";
+  document.getElementById("headerStats").textContent = viewed + " / " + total + " concepts viewed";
+  document.getElementById("progressDisplay").textContent = viewed + " / " + total + " viewed";
+}
 
 // ===== NAV =====
-document.querySelectorAll('#nav button').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('#nav button').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-    document.getElementById('section-' + btn.dataset.section).classList.add('active');
+document.querySelectorAll("#nav button").forEach(function(btn) {
+  btn.addEventListener("click", function() {
+    document.querySelectorAll("#nav button").forEach(function(b) { b.classList.remove("active"); });
+    btn.classList.add("active");
+    document.querySelectorAll(".section").forEach(function(s) { s.classList.remove("active"); });
+    document.getElementById("section-" + btn.dataset.section).classList.add("active");
   });
 });
 
+// ===== CATEGORY FILTER =====
+var activeCat = "all";
+function renderCatFilter() {
+  var el = document.getElementById("catFilter");
+  el.innerHTML = '<button class="active" data-cat="all" onclick="setCat(\'all\')">All</button>';
+  for (var c in CATEGORIES) {
+    el.innerHTML += '<button data-cat="' + c + '" onclick="setCat(\'' + c + '\')">' + CATEGORIES[c].label + "</button>";
+  }
+}
+function setCat(cat) {
+  activeCat = cat;
+  document.querySelectorAll("#catFilter button").forEach(function(b) {
+    b.classList.toggle("active", b.dataset.cat === cat);
+  });
+  renderList();
+}
+
 // ===== LIST =====
 function renderList() {
-  const grid = document.getElementById('conceptGrid');
-  grid.innerHTML = '';
-  const keys = Object.keys(CONCEPTS).sort();
-  keys.forEach(key => {
-    const c = CONCEPTS[key];
-    const card = document.createElement('div');
-    card.className = 'concept-card';
-    card.innerHTML = `<div class="cn">${c.name}</div><div class="en">${c.name_en}</div><div class="key">${key}</div>`;
-    card.onclick = () => {
+  var grid = document.getElementById("conceptGrid");
+  grid.innerHTML = "";
+  var keys = Object.keys(CONCEPTS).sort();
+  var progress = getProgress();
+  keys.forEach(function(key) {
+    if (activeCat !== "all" && CONCEPTS[key].cat !== activeCat) return;
+    var c = CONCEPTS[key];
+    var viewed = progress[key] ? "style='opacity:0.85'" : "";
+    var card = document.createElement("div");
+    card.className = "concept-card";
+    card.setAttribute("data-key", key);
+    card.innerHTML = '<div class="cn">' + c.name + '</div><div class="en">' + c.name_en + "</div><div class=\"key\">" + key + "</div>";
+    if (progress[key]) card.style.opacity = "0.85";
+    card.onclick = function() {
+      markViewed(key);
       showExplain(key);
-      document.querySelector('#nav button[data-section="explain"]').click();
+      document.querySelector("#nav button[data-section=\"explain\"]").click();
     };
     grid.appendChild(card);
   });
 }
+renderCatFilter();
 renderList();
 
 // ===== EXPLAIN =====
 function renderExplain(key) {
-  const c = CONCEPTS[key];
-  if (!c) return '<div class="not-found">未找到该概念</div>';
-  return `
-    <div class="explain-card">
-      <div class="explain-header">
-        <h2>${c.name}</h2>
-        <div class="en">${c.name_en}</div>
-      </div>
-      <div class="explain-body">
-        <div class="explain-section">
-          <div class="label one">>> 一句话解释 <span class="badge-ai">AI-assisted</span></div>
-          <div class="content">${c.one_line}</div>
-        </div>
-        <div class="explain-section">
-          <div class="label example">>> 具体例子 <span class="badge-ai">AI-assisted</span> <span class="badge-human">Human-verified</span></div>
-          <div class="content">${c.example}</div>
-        </div>
-        <div class="explain-section">
-          <div class="label mis">>> 常见误解 <span class="badge-ai">AI-assisted</span> <span class="badge-human">Human-verified</span></div>
-          <div class="content">${c.misconception}</div>
-        </div>
-      </div>
-    </div>`;
+  var c = CONCEPTS[key];
+  if (!c) return '<div class="not-found">Concept not found</div>';
+  return (
+    '<div class="explain-card">' +
+      '<div class="explain-header"><h2>' + c.name + '</h2><div class="en">' + c.name_en + '</div></div>' +
+      '<div class="explain-body">' +
+        '<div class="explain-section"><div class="label one">>> One-Line Summary <span class="badge badge-ai">AI-assisted</span></div><div class="content">' + c.one_line + "</div></div>" +
+        '<div class="explain-section"><div class="label example">>> Example <span class="badge badge-ai">AI-assisted</span> <span class="badge badge-human">Human-verified</span></div><div class="content">' + c.example + "</div></div>" +
+        '<div class="explain-section"><div class="label mis">>> Misconception <span class="badge badge-ai">AI-assisted</span> <span class="badge badge-human">Human-verified</span></div><div class="content">' + c.misconception + "</div></div>" +
+      "</div>" +
+    "</div>"
+  );
 }
-
 function showExplain(key) {
-  document.getElementById('explainResult').innerHTML = renderExplain(key);
-  document.getElementById('searchInput').value = key;
+  document.getElementById("explainResult").innerHTML = renderExplain(key);
+  document.getElementById("searchInput").value = key;
 }
-
 function doSearch() {
-  const q = document.getElementById('searchInput').value.trim().toLowerCase();
+  var q = document.getElementById("searchInput").value.trim().toLowerCase();
   if (!q) return;
-
-  if (CONCEPTS[q]) {
-    showExplain(q);
-    return;
+  if (CONCEPTS[q]) { showExplain(q); return; }
+  var matches = [];
+  for (var key in CONCEPTS) {
+    var c = CONCEPTS[key];
+    if (key.includes(q) || c.name.indexOf(q) !== -1 || c.name_en.toLowerCase().indexOf(q) !== -1) matches.push(key);
   }
-
-  const matches = [];
-  for (const [key, c] of Object.entries(CONCEPTS)) {
-    if (key.includes(q) || c.name.includes(q) || c.name_en.toLowerCase().includes(q)) {
-      matches.push(key);
-    }
-  }
-
   if (matches.length === 0) {
-    document.getElementById('explainResult').innerHTML = '<div class="not-found">未找到匹配的概念</div>';
+    document.getElementById("explainResult").innerHTML = '<div class="not-found">No matching concepts</div>';
   } else if (matches.length === 1) {
     showExplain(matches[0]);
   } else {
-    document.getElementById('explainResult').innerHTML = `
-      <p style="color:#86868b;margin-bottom:12px;">找到多个匹配概念：</p>
-      <div class="concept-grid">${matches.map(k => {
-        const c = CONCEPTS[k];
-        return `<div class="concept-card" onclick="showExplain('${k}')"><div class="cn">${c.name}</div><div class="key">${k}</div></div>`;
-      }).join('')}</div>`;
+    document.getElementById("explainResult").innerHTML =
+      '<p style="color:var(--subtext);margin-bottom:12px;">Multiple matches:</p><div class="concept-grid">' +
+      matches.map(function(k) {
+        return '<div class="concept-card" onclick="showExplain(\'' + k + '\')"><div class="cn">' + CONCEPTS[k].name + '</div><div class="key">' + k + "</div></div>";
+      }).join("") + "</div>";
   }
 }
 
 // ===== RANDOM =====
 function showRandom() {
-  const keys = Object.keys(CONCEPTS);
-  const key = keys[Math.floor(Math.random() * keys.length)];
-  document.getElementById('randomResult').innerHTML = renderExplain(key);
+  var keys = Object.keys(CONCEPTS);
+  var key = keys[Math.floor(Math.random() * keys.length)];
+  markViewed(key);
+  document.getElementById("randomResult").innerHTML = renderExplain(key);
 }
 
 // ===== QUIZ =====
-let quizState = { keys: [], index: 0, score: 0, answered: false };
-
+var quizState = { keys: [], index: 0, score: 0, answered: false };
 function initQuiz() {
-  quizState.keys = Object.keys(CONCEPTS).sort(() => Math.random() - 0.5);
+  quizState.keys = Object.keys(CONCEPTS).sort(function() { return Math.random() - 0.5; });
   quizState.index = 0;
   quizState.score = 0;
   quizState.answered = false;
+  renderQuizHistory();
   renderQuiz();
 }
-
 function renderQuiz() {
-  const area = document.getElementById('quizArea');
-  const { keys, index, score } = quizState;
-  if (index >= 5 || index >= keys.length) {
-    area.innerHTML = `
-      <div class="quiz-result">
-        <div class="score">${score} / ${Math.min(5, keys.length)}</div>
-        <div class="score-label">测验完成！</div>
-        <button class="quiz-next-btn" onclick="initQuiz()">重新测验</button>
-      </div>`;
+  var area = document.getElementById("quizArea");
+  var ks = quizState.keys, idx = quizState.index, score = quizState.score;
+  if (idx >= 5 || idx >= ks.length) {
+    addQuizResult(score, Math.min(5, ks.length));
+    renderQuizHistory();
+    area.innerHTML =
+      '<div class="quiz-result"><div class="score">' + score + " / " + Math.min(5, ks.length) +
+      '</div><div class="score-label">Quiz complete!</div><button class="quiz-next-btn" onclick="initQuiz()">Retry</button></div>';
     return;
   }
-
-  const key = keys[index];
-  const c = CONCEPTS[key];
-  const types = ['one_line', 'example', 'misconception'];
-  const qType = types[Math.floor(Math.random() * types.length)];
-  const typeLabels = { one_line: '一句话解释', example: '具体例子', misconception: '常见误解' };
-
-  const wrongKey = keys.find(k => k !== key);
-  const wrong = CONCEPTS[wrongKey];
-
-  const options = [
-    { text: c[qType], correct: true },
-    { text: wrong[qType], correct: false }
-  ].sort(() => Math.random() - 0.5);
-
-  quizState.current = { key, qType, options };
-
-  area.innerHTML = `
-    <div class="quiz-progress">第 ${index + 1} / ${Math.min(5, keys.length)} 题 · 当前得分: ${score}</div>
-    <div class="quiz-card">
-      <div class="quiz-question">
-        <div class="concept-name">${c.name}</div>
-        <div class="q-type">以下哪项是它的「${typeLabels[qType]}」？</div>
-        <div class="q-text">${c[qType].substring(0, 80)}...</div>
-        ${options.map((opt, i) =>
-          `<button class="quiz-option" data-idx="${i}" onclick="answerQuiz(${i})">${opt.text.substring(0, 100)}...</button>`
-        ).join('')}
-      </div>
-    </div>`;
+  var key = ks[idx], c = CONCEPTS[key];
+  var types = ["one_line", "example", "misconception"];
+  var qType = types[Math.floor(Math.random() * 3)];
+  var typeLabels = { one_line: "One-Line Summary", example: "Example", misconception: "Misconception" };
+  var wrongKey = ks.find(function(k) { return k !== key; }) || "llm";
+  var wrong = CONCEPTS[wrongKey];
+  var options = [{ text: c[qType], correct: true }, { text: wrong[qType], correct: false }].sort(function() { return Math.random() - 0.5; });
+  quizState.current = { key: key, qType: qType, options: options };
+  area.innerHTML =
+    '<div class="quiz-progress">Q' + (idx + 1) + " / " + Math.min(5, ks.length) + "  Score: " + score +
+    '</div><div class="quiz-card"><div class="quiz-question"><div class="concept-name">' +
+    c.name + '</div><div class="q-type">Which is its "' + typeLabels[qType] + '"?</div><div class="q-text">' +
+    c[qType].substring(0, 80) + '...</div>' +
+    options.map(function(opt, i) {
+      return '<button class="quiz-option" data-idx="' + i + '" onclick="answerQuiz(' + i + ')">' + opt.text.substring(0, 100) + "...</button>";
+    }).join("") + "</div></div>";
 }
-
 function answerQuiz(idx) {
   if (quizState.answered) return;
   quizState.answered = true;
-
-  const { options, key, qType } = quizState.current;
-  const buttons = document.querySelectorAll('.quiz-option');
-  buttons.forEach((btn, i) => {
+  var opts = quizState.current.options;
+  var buttons = document.querySelectorAll(".quiz-option");
+  buttons.forEach(function(btn, i) {
     btn.disabled = true;
-    if (options[i].correct) btn.classList.add('correct');
-    else if (i === idx) btn.classList.add('wrong');
+    if (opts[i].correct) btn.classList.add("correct");
+    else if (i === idx) btn.classList.add("wrong");
   });
-
-  if (options[idx].correct) quizState.score++;
-
-  setTimeout(() => {
+  if (opts[idx].correct) quizState.score++;
+  setTimeout(function() {
     quizState.index++;
     quizState.answered = false;
     renderQuiz();
-  }, 1500);
+  }, 1200);
+}
+function renderQuizHistory() {
+  var h = getQuizHistory();
+  var el = document.getElementById("quizHistory");
+  if (h.length === 0) { el.innerHTML = ""; return; }
+  var recent = h.slice(-5).reverse();
+  var avg = h.reduce(function(s, r) { return s + r.score / r.total; }, 0) / h.length;
+  el.innerHTML = '<span>Recent:</span> ' + recent.map(function(r) { return r.score + "/" + r.total; }).join(" | ") + ' <span>Avg: ' + (avg * 100).toFixed(0) + "%</span>";
 }
 
-// Start
+// ===== INIT =====
+updateProgressBar();
 initQuiz();
 </script>
 </body>
