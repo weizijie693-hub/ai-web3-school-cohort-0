@@ -1,34 +1,27 @@
-# AI × Web3 Concept Explainer
+# AI x Web3 Concept Explainer
 
-An interactive learning tool covering 35 core concepts across AI, Web3, and the AI×Web3 bridge.
+Interactive learning tool for AI and Web3 core concepts. Two versions available:
 
-- **Web**: https://weizijie693-hub.github.io/ai-web3-school-cohort-0/experiments/cli-concept-explainer/index.html
-- **CLI**: `python cli_concept_explainer.py` (requires Python 3.6+)
+## v1 (original)
 
-## What it solves
+- 11 concepts, CLI + web
+- Three-part format: one-line summary, example, misconception
+- Basic quiz (5 questions)
 
-Newcomers often face: too many concepts to start with, abstract explanations hard to remember, and no way to test understanding. Each concept uses a three-part structure: one-line summary, concrete example, common misconception. Built-in quiz tests retention.
+`cd v1/` to use, or open `v1/index.html` in a browser.
 
-## Categories
+## v2 (updated)
 
-| Category | Count | Examples |
-|----------|-------|---------|
-| AI | 15 | LLM, RAG, Agent, Prompt, Fine-tuning, MCP, Vibe Coding |
-| Web3 | 15 | Blockchain, DeFi, PoS, AMM, L2, Wallet, NFT, DAO |
-| AI x Web3 | 5 | Agent Wallet, Machine Payment, AI Oracle, Verifiable AI |
+- **35 concepts** (15 AI + 15 Web3 + 5 AIxWeb3 Bridge), CLI + web
+- **Dark mode** toggle with localStorage persistence
+- **Category filter**: AI / Web3 / Bridge
+- **Learning progress**: localStorage tracks viewed concepts + progress bar
+- **Quiz history**: saves recent scores + average
 
-## AI-assisted vs Human-verified
+`cd v2/` to use, or open `v2/index.html` in a browser.
 
-- **Concept content**: AI-drafted from Handbook + model knowledge, then manually reviewed and corrected per-concept
-- **Three-part format**: AI-suggested structure, human-approved
-- **CLI code**: AI-generated framework, manually debugged for Windows encoding, edge cases, and cross-platform compatibility
-- **Web version**: AI-generated HTML/CSS/JS, manually adjusted dark mode, responsive layout, localStorage persistence, and quiz edge cases
-- **Quiz logic**: Human-added empty input handling, invalid answer fallback, and score tracking after AI-proposed skeleton
+## Quick links
 
-## v2 improvements
-
-- Expanded from 11 to 35 concepts
-- Dark mode toggle (persisted in localStorage)
-- Category filter (AI / Web3 / Bridge)
-- Learning progress tracking with localStorage
-- Quiz history with average score tracking
+- v1 web: `v1/index.html`
+- v2 web: `v2/index.html`
+- GitHub Pages: https://weizijie693-hub.github.io/ai-web3-school-cohort-0/experiments/cli-concept-explainer/v2/index.html
